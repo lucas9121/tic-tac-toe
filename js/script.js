@@ -21,6 +21,7 @@ squares.forEach((square, idx) => {
         })
 })
 
+
 const playerMove = (idx, event) => {
     row = Math.floor(idx / 3)
     column = ((idx / 3) * 3) - (row * 3)
