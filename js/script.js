@@ -6,60 +6,75 @@ let playerTurn = true
 let playerChoice = 'X'
 let computerChoice = playerChoice === 'X' ? 'O' : 'X';
 
-console.log((5/3) * 3)
-console.log((5/3) + (5/3) + (5/3))
-console.log(Math.pow(2, (2/3)))
 
 squares.forEach((square, idx) => {
         square.addEventListener('click', (evt) => {
             let event = evt.target;
             if(!event.childNodes.length && playerTurn){
-                row = Math.floor(idx / 3)
-                column = ((idx / 3) * 3) - (row * 3)
-                let span = document.createElement('span')
-                span.classList.add('choice')
-                span.innerHTML = playerChoice
-                span.style.color = 'blue'
-                game[row][column]++  
-                event.appendChild(span)
-                playerTurn = !playerTurn
-                if(checkWinner(1)){
-                    console.log('you won')
-                    return
-                }
+                playerMove(idx, event)
+            } else {
                 setTimeout(() => {
                     computer()
                 }, 0500);
                 console.log(game)
-
             }
         })
 })
 
+const playerMove = (idx, event) => {
+    row = Math.floor(idx / 3)
+    column = ((idx / 3) * 3) - (row * 3)
+    let span = document.createElement('span')
+    span.classList.add('choice')
+    span.innerHTML = playerChoice
+    span.style.color = 'blue'
+    game[row][column]++  
+    event.appendChild(span)
+    // check is someone won
+    let winner = checkWinner(1)
+    if(winner === 10){
+        console.log('you won')
+        document.querySelector('.screen').style.display = 'block'
+        return
+    } else if(winner === 0){
+        console.log('tie')
+        document.querySelector('.screen').style.display = 'block'
+        return
+    }
+    
+    // computer's turn
+    playerTurn = !playerTurn
+    setTimeout(() => {
+        computer()
+    }, 0500);
+}
+
 const computer = () => {
-    row = Math.floor(Math.random() * 3)
-    column = Math.floor(Math.random() * 3)
     let available = checkSquares()
+    // keep finding empty row
     while(available){
         row = Math.floor(Math.random() * 3)
         column = Math.floor(Math.random() * 3)
-        if(game[row][column] === 0){
-            game[row][column]--
-            let span = document.createElement('span')
-            span.classList.add('choice')
-            span.innerHTML = computerChoice
-            squares[((row * 3) + column)].appendChild(span)
-            if(checkWinner(-1)){
-                console.log('Computer won')
-                return
-                break
-            }
-            playerTurn = !playerTurn
-            console.log(game)
-            break
-        }
-        console.log('Computer didn\'t go')
+        if(game[row][column] === 0) break
+        console.log('Computer didn\'t go yet')
     }
+    game[row][column]--
+    let span = document.createElement('span')
+    span.classList.add('choice')
+    span.innerHTML = computerChoice
+    squares[((row * 3) + column)].appendChild(span)
+    let winner = checkWinner(-1)
+    if( winner === -10){
+        console.log('Computer won')
+        document.querySelector('.screen').style.display = 'block'
+        return
+    } else if(winner === 0){
+        console.log('tie')
+        document.querySelector('.screen').style.display = 'block'
+        return
+    }
+    playerTurn = !playerTurn
+    console.log(game)
 }
 
 const checkSquares = () => {
@@ -70,23 +85,27 @@ const checkSquares = () => {
 }
 
 const checkWinner = (piece) => {
+    let available = checkSquares()
     console.log(game)
-    // horizontal victory
-    if(game[0][0] === piece && game[0][1] === piece && game[0][2] === piece) return true
-    if(game[1][0] === piece && game[1][1] === piece && game[1][2] === piece) return true
-    if(game[2][0] === piece && game[2][1] === piece && game[2][2] === piece) return true
+    // Horizontal victory
+    if(game[0][0] === piece && game[0][1] === piece && game[0][2] === piece) return 10 * piece
+    if(game[1][0] === piece && game[1][1] === piece && game[1][2] === piece) return 10 * piece
+    if(game[2][0] === piece && game[2][1] === piece && game[2][2] === piece) return 10 * piece
 
-    //vertical victory
-    if(game[0][0] === piece && game[1][0] === piece && game[2][0] === piece) return true
-    if(game[0][1] === piece && game[1][1] === piece && game[2][1] === piece) return true
-    if(game[0][2] === piece && game[1][2] === piece && game[2][2] === piece) return true
+    // Vertical victory
+    if(game[0][0] === piece && game[1][0] === piece && game[2][0] === piece) return 10 * piece
+    if(game[0][1] === piece && game[1][1] === piece && game[2][1] === piece) return 10 * piece
+    if(game[0][2] === piece && game[1][2] === piece && game[2][2] === piece) return 10 * piece
 
-    //diagoanal victory
-    if(game[0][0] === piece && game[1][1] === piece && game[2][2] === piece) return true
-    if(game[0][2] === piece && game[1][1] === piece && game[2][0] === piece) return true
+    // Diagoanal victory
+    if(game[0][0] === piece && game[1][1] === piece && game[2][2] === piece) return 10 * piece
+    if(game[0][2] === piece && game[1][1] === piece && game[2][0] === piece) return 10 * piece
 
-    //no winner yet
-    return false
+    // Tie
+    if(!available){
+        console.log('tie')
+        return 0
+    }
 }
 
 
