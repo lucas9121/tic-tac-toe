@@ -9,7 +9,17 @@ main{
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
+
+.screen{
+    display: none;
+    background: transparent;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
 .container {
     display: grid;
     grid-template-columns: 200px 200px 200px;
