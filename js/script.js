@@ -76,6 +76,7 @@ const computer = () => {
     }
     playerTurn = !playerTurn
     console.log(game)
+    console.log(minimax(game, 0, 0, 0, false))
 }
 
 const checkSquares = () => {
@@ -87,7 +88,6 @@ const checkSquares = () => {
 
 const checkWinner = (piece) => {
     let available = checkSquares()
-    console.log(game)
     // Horizontal victory
     if(game[0][0] === piece && game[0][1] === piece && game[0][2] === piece) return 10 * piece
     if(game[1][0] === piece && game[1][1] === piece && game[1][2] === piece) return 10 * piece
@@ -103,11 +103,65 @@ const checkWinner = (piece) => {
     if(game[0][2] === piece && game[1][1] === piece && game[2][0] === piece) return 10 * piece
 
     // Tie
-    if(!available){
-        console.log('tie')
-        return 0
+    if(!available) return 0
+}
+
+/*
+
+function minimax(board, depth, alpha, beta, is_maximizing) {
+
+    if (checkWinner(1) === 10) {
+        return checkWinner(1) - depth;
+    }
+    if (checkWinner(-1) === -10) {
+        return checkWinner(-1) + depth;
+    }
+    if (!checkSquares()) {
+        return 0;
+    }
+
+    // computer score
+    if (is_maximizing) {
+        let best_score = -Infinity;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (board[i][j] === 0) {
+                    board[i][j] = -1;
+                    let score = minimax(board, depth+1, alpha, beta, false);
+                    board[i][j] = 0;
+                    best_score = Math.max(best_score, score);
+                    alpha = Math.max(alpha, score);
+                    if (beta <= alpha) {
+                        break;
+                    }
+                }
+            }
+        }
+        return best_score;
+
+    // player score
+    } else {
+        let best_score = Infinity;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (board[i][j] === 0) {
+                    board[i][j] = 1;
+                    let score = minimax(board, depth+1, alpha, beta, true);
+                    board[i][j] = 0;
+                    best_score = Math.min(best_score, score);
+                    beta = Math.min(beta, score);
+                    if (beta <= alpha) {
+                        break;
+                    }
+                }
+            }
+        }
+        return best_score;
     }
 }
+
+
+*/
 
 
 
