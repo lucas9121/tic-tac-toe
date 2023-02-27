@@ -1,6 +1,7 @@
 const squares = document.querySelectorAll('.square')
 
 const game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+const scoreMove = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 let row, column
 let playerTurn = true
 let playerChoice = 'X'
@@ -59,6 +60,8 @@ const computer = () => {
         if(game[row][column] === 0) break
         console.log('Computer didn\'t go yet')
     }
+    minimax(game, 0, 0, 0, true)
+    console.log(scoreMove)
     game[row][column]--
     let span = document.createElement('span')
     span.classList.add('choice')
@@ -76,7 +79,6 @@ const computer = () => {
     }
     playerTurn = !playerTurn
     console.log(game)
-    console.log(minimax(game, 0, 0, 0, false))
 }
 
 const checkSquares = () => {
@@ -106,15 +108,15 @@ const checkWinner = (piece) => {
     if(!available) return 0
 }
 
-/*
+// my minimax
 
 function minimax(board, depth, alpha, beta, is_maximizing) {
 
-    if (checkWinner(1) === 10) {
-        return checkWinner(1) - depth;
-    }
     if (checkWinner(-1) === -10) {
-        return checkWinner(-1) + depth;
+        return 10 - depth;
+    }
+    if (checkWinner(1) === 10) {
+        return depth - 10;
     }
     if (!checkSquares()) {
         return 0;
@@ -125,11 +127,13 @@ function minimax(board, depth, alpha, beta, is_maximizing) {
         let best_score = -Infinity;
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
+                scoreMove[i][j] = 0
                 if (board[i][j] === 0) {
                     board[i][j] = -1;
                     let score = minimax(board, depth+1, alpha, beta, false);
                     board[i][j] = 0;
                     best_score = Math.max(best_score, score);
+                    scoreMove[i][j] = best_score
                     alpha = Math.max(alpha, score);
                     if (beta <= alpha) {
                         break;
@@ -161,7 +165,7 @@ function minimax(board, depth, alpha, beta, is_maximizing) {
 }
 
 
-*/
+
 
 
 
