@@ -1,7 +1,7 @@
 const squares = document.querySelectorAll('.square')
 
 const game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-const scoreMove = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+let scoreMove = [[...game[0]], [...game[1]], [...game[2]]]
 let row, column
 let playerTurn = true
 let playerChoice = 'X'
@@ -32,8 +32,9 @@ const playerMove = (idx, event) => {
     span.style.color = 'blue'
     game[row][column]++  
     event.appendChild(span)
+    // scoreMove = game.slice(0)
     // check is someone won
-    let winner = checkWinner(1)
+    let winner = checkWinner(game, 1)
     if(winner === 10){
         console.log('you won')
         document.querySelector('.screen').style.display = 'block'
@@ -51,8 +52,11 @@ const playerMove = (idx, event) => {
     }, 0500);
 }
 
-const computer = () => {
+const computer = () => { 
     let available = checkSquares()
+    // update shallow array
+    scoreMove = [[...game[0]], [...game[1]], [...game[2]]]
+
     // keep finding empty row
     while(available){
         row = Math.floor(Math.random() * 3)
@@ -60,14 +64,12 @@ const computer = () => {
         if(game[row][column] === 0) break
         console.log('Computer didn\'t go yet')
     }
-    minimax(game, 0, 0, 0, true)
-    console.log(scoreMove)
     game[row][column]--
     let span = document.createElement('span')
     span.classList.add('choice')
     span.innerHTML = computerChoice
     squares[((row * 3) + column)].appendChild(span)
-    let winner = checkWinner(-1)
+    let winner = checkWinner(game, -1)
     if( winner === -10){
         console.log('Computer won')
         document.querySelector('.screen').style.display = 'block'
@@ -77,8 +79,12 @@ const computer = () => {
         document.querySelector('.screen').style.display = 'block'
         return
     }
+    let ai = minimax(scoreMove, 0, true)
+    console.log(ai)
+    // scoreMove = game.slice(0)  
     playerTurn = !playerTurn
     console.log(game)
+    console.log(scoreMove)
 }
 
 const checkSquares = () => {
@@ -88,21 +94,21 @@ const checkSquares = () => {
     return false
 }
 
-const checkWinner = (piece) => {
+const checkWinner = (board, piece) => {
     let available = checkSquares()
     // Horizontal victory
-    if(game[0][0] === piece && game[0][1] === piece && game[0][2] === piece) return 10 * piece
-    if(game[1][0] === piece && game[1][1] === piece && game[1][2] === piece) return 10 * piece
-    if(game[2][0] === piece && game[2][1] === piece && game[2][2] === piece) return 10 * piece
+    if(board[0][0] === piece && board[0][1] === piece && board[0][2] === piece) return 10 * piece
+    if(board[1][0] === piece && board[1][1] === piece && board[1][2] === piece) return 10 * piece
+    if(board[2][0] === piece && board[2][1] === piece && board[2][2] === piece) return 10 * piece
 
     // Vertical victory
-    if(game[0][0] === piece && game[1][0] === piece && game[2][0] === piece) return 10 * piece
-    if(game[0][1] === piece && game[1][1] === piece && game[2][1] === piece) return 10 * piece
-    if(game[0][2] === piece && game[1][2] === piece && game[2][2] === piece) return 10 * piece
+    if(board[0][0] === piece && board[1][0] === piece && board[2][0] === piece) return 10 * piece
+    if(board[0][1] === piece && board[1][1] === piece && board[2][1] === piece) return 10 * piece
+    if(board[0][2] === piece && board[1][2] === piece && board[2][2] === piece) return 10 * piece
 
     // Diagoanal victory
-    if(game[0][0] === piece && game[1][1] === piece && game[2][2] === piece) return 10 * piece
-    if(game[0][2] === piece && game[1][1] === piece && game[2][0] === piece) return 10 * piece
+    if(board[0][0] === piece && board[1][1] === piece && board[2][2] === piece) return 10 * piece
+    if(board[0][2] === piece && board[1][1] === piece && board[2][0] === piece) return 10 * piece
 
     // Tie
     if(!available) return 0
@@ -110,12 +116,16 @@ const checkWinner = (piece) => {
 
 // my minimax
 
-function minimax(board, depth, alpha, beta, is_maximizing) {
+function minimax(board, depth, is_maximizing) {
 
-    if (checkWinner(-1) === -10) {
+    if (checkWinner(board, -1) === -10) {
+        console.log('computer won')
+        console.log('depth is ', depth)
         return 10 - depth;
     }
-    if (checkWinner(1) === 10) {
+    if (checkWinner(board, 1) === 10) {
+        console.log('player won')
+        console.log('depth is ', depth) 
         return depth - 10;
     }
     if (!checkSquares()) {
@@ -125,42 +135,58 @@ function minimax(board, depth, alpha, beta, is_maximizing) {
     // computer score
     if (is_maximizing) {
         let best_score = -Infinity;
+        const bestMove = {
+            row: -1, 
+            column: -1
+        }
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
-                scoreMove[i][j] = 0
                 if (board[i][j] === 0) {
+                        bestMove.row = i;
+                        bestMove.column = j;
+                    // console.log(i, j)    
                     board[i][j] = -1;
-                    let score = minimax(board, depth+1, alpha, beta, false);
+                    // console.log(board)
+                    let score = minimax(board, depth+1, false);
                     board[i][j] = 0;
-                    best_score = Math.max(best_score, score);
-                    scoreMove[i][j] = best_score
-                    alpha = Math.max(alpha, score);
-                    if (beta <= alpha) {
-                        break;
+                    if (score > best_score) {
+                        console.log('computer score is higher ', i, j)
+                        console.log(score)
+                        best_score = score;
+                        // console.log(best_score)
+                        bestMove.row = i;
+                        bestMove.column = j;
                     }
                 }
             }
         }
-        return best_score;
+        // console.log(bestMove)
+        // console.log(scoreMove)
+        // console.log(game)
+        // scoreMove = [...game]
+        return bestMove;
 
     // player score
     } else {
         let best_score = Infinity;
+        const bestMove = {row: -1, column: -1}
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
                 if (board[i][j] === 0) {
+                    scoreMove[i][j] = 0
                     board[i][j] = 1;
-                    let score = minimax(board, depth+1, alpha, beta, true);
+                    let score = minimax(board, depth+1, true);
                     board[i][j] = 0;
-                    best_score = Math.min(best_score, score);
-                    beta = Math.min(beta, score);
-                    if (beta <= alpha) {
-                        break;
+                    if (score < best_score) {
+                        best_score = score;
+                        bestMove.column = i;
+                        bestMove.row = j;
                     }
                 }
             }
         }
-        return best_score;
+        // scoreMove = [...game]
+        return bestMove;
     }
 }
 
