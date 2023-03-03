@@ -37,13 +37,17 @@ const playerMove = (idx, event) => {
     span.classList.add('choice')
     span.innerHTML = playerChoice
     span.style.color = 'blue'
-    game[row][column]  
+    game[row][column]--  
     event.appendChild(span)
     // scoreMove = game.slice(0)
     // check is someone won
-    let winner = checkWinner(game, 1)
-    if(winner === 10){
+    let winner = checkWinner(game, -1)
+    if(winner === -10){
         console.log('you won')
+        document.querySelector('.screen').style.display = 'block'
+        return
+    } else if( winner === 10){
+        console.log('Computer won')
         document.querySelector('.screen').style.display = 'block'
         return
     } else if(!available){
@@ -71,14 +75,18 @@ const computer = () => {
         if(game[row][column] === 0) break
         console.log('Computer didn\'t go yet')
     }
-    game[row][column]--
+    game[row][column]++
     let span = document.createElement('span')
     span.classList.add('choice')
     span.innerHTML = computerChoice
     squares[((row * 3) + column)].appendChild(span)
-    let winner = checkWinner(game, -1)
-    if( winner === -10){
+    let winner = checkWinner(game, 1)
+    if( winner === 10){
         console.log('Computer won')
+        document.querySelector('.screen').style.display = 'block'
+        return
+    } else if(winner === -10){
+        console.log('you won')
         document.querySelector('.screen').style.display = 'block'
         return
     } else if(!available){
@@ -86,8 +94,8 @@ const computer = () => {
         document.querySelector('.screen').style.display = 'block'
         return
     }
-    let ai = minimax(scoreMove, 0, -Infinity, Infinity, true)
-    console.log(ai)
+    // let ai = minimax(scoreMove, 0, -Infinity, Infinity, true)
+    // console.log(ai)
     // scoreMove = game.slice(0)  
     playerTurn = !playerTurn
     console.log(game)
