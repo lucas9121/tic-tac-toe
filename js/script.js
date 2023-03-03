@@ -131,7 +131,13 @@ const checkWinner = (board, piece) => {
 // my minimax
 
 function newMinimax(board, playerTurn){
+    let point = playerTurn ? -1 : 1
+    const winner = checkWinner(scoreMove, point)
+    //computer won
+    if(winner === 10) return [1, null]
 
+    // player won
+    if(winner === -10) return [-1, null]
 }
 
 function minimax(board, depth, alpha, beta, is_maximizing) {
