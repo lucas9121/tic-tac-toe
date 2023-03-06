@@ -138,7 +138,61 @@ function newMinimax(board, playerTurn){
 
     // player won
     if(winner === -10) return [-1, null]
+    let move, moveScore;
+    if(!playerTurn) {
+        [moveScore, move ] = minimaxMaximize(board)
+    } else {
+        [moveScore, move] = minimaxMinimize(board)
+    }
+
+    if(move === null) {
+        moveScore = 0
+    }
 }
+
+function minimaxMaximize(board){
+    let moveScore = -Infinity;
+    let move = null;
+
+    for(let i = 0; i < 3; i++){
+        for(let j = 0; j < 3; j++){
+            if(board[i][j] === 0){
+                const newBoard = board.map(r => r.slice())
+                newBoard[i][j] = 1;
+                const [newMoveScore, ] = newMinimax(newBoard, playerTurn = true)
+
+                if(newMoveScore > moveScore){
+                    move = [i, j];
+                    moveScore = newMoveScore
+                }
+            } 
+        }
+    }
+    return [moveScore, move]
+}
+
+function minimaxMinimize(board){
+    let moveScore = Infinity;
+    let move = null;
+
+    for(let i = 0; i < 3; i++){
+        for(let j = 0; j < 3; j++){
+            if(board[i][j] === 0){
+                const newBoard = board.map(r => r.slice())
+                newBoard[i][j] = -1;
+                const [newMoveScore, ] = newMinimax(newBoard, playerTurn = false)
+
+                if(newMoveScore < moveScore){
+                    move = [i, j];
+                    moveScore = newMoveScore
+                }
+
+            } 
+        }
+    }
+    return [moveScore, move]
+}
+
 
 function minimax(board, depth, alpha, beta, is_maximizing) {
     if (checkWinner(board, -1) === -10) {
