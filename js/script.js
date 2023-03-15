@@ -69,6 +69,65 @@ const computer = () => {
     // update shallow array
     scoreMove = [[...game[0]], [...game[1]], [...game[2]]]
 
+    if (available) {
+        let bestScore = -Infinity
+        let bestMove = { row: -1, col: -1 }
+    
+        // Try all possible moves and pick the one with the best score
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            if (game[i][j] === 0) {
+              game[i][j] = 1
+              let score = minimax(game, 1, false)
+              game[i][j] = 0
+              if (score > bestScore) {
+                bestScore = score
+                bestMove.row = i
+                bestMove.col = j
+              }
+            }
+          }
+        }
+    
+        row = bestMove.row
+        column = bestMove.col
+        game[row][column]++
+        let span = document.createElement('span')
+        span.classList.add('choice')
+        span.innerHTML = computerChoice
+        squares[((row * 3) + column)].appendChild(span)
+    }
+    let winner = checkWinner(game, 1)
+    if( winner === 10){
+        console.log('Computer won')
+        document.querySelector('.screen').style.display = 'block'
+        return
+    } else if(winner === -10){
+        console.log('you won')
+        document.querySelector('.screen').style.display = 'block'
+        return
+    } else if(!available){
+        console.log('tie')
+        document.querySelector('.screen').style.display = 'block'
+        return
+    }
+    // let ai = minimax(scoreMove, 0, -Infinity, Infinity, true)
+    // console.log(ai)
+    // scoreMove = game.slice(0)
+    // let newAi = newMinimax(game, playerTurn)  
+    // console.log(newAi)
+    playerTurn = !playerTurn
+    // console.log(game)
+    // console.log(scoreMove)
+}
+
+
+/*
+const computer = () => { 
+    let available = checkSquares()
+    // update shallow array
+    scoreMove = [[...game[0]], [...game[1]], [...game[2]]]
+
     // keep finding empty row
     while(available){
         row = Math.floor(Math.random() * 3)
@@ -105,6 +164,8 @@ const computer = () => {
     // console.log(scoreMove)
 }
 
+*/
+
 const checkSquares = () => {
     for(let square of squares){
         if(!square.childNodes.length) return true
@@ -132,6 +193,54 @@ const checkWinner = (board, piece) => {
 }
 
 // my minimax
+
+
+const minimax = (board, depth, isMaximizing) => {
+    let score = checkWinner(board, 1) || checkWinner(board, -1)
+  
+    // Base case: return the score if the game is over or the depth limit has been reached
+    if (score !== 0 || depth === 0) {
+      return score
+    }
+  
+    if (isMaximizing) {
+      let bestScore = -Infinity
+  
+      // Try all possible moves and pick the one that maximizes the score
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (board[i][j] === 0) {
+            board[i][j] = 1
+            let score = minimax(board, depth - 1, false)
+            board[i][j] = 0
+            bestScore = Math.max(score, bestScore)
+          }
+        }
+      }
+  
+      return bestScore
+    } else {
+      let bestScore = Infinity
+  
+      // Try all possible moves and pick the one that minimizes the score
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (board[i][j] === 0) {
+            board[i][j] = -1
+            let score = minimax(board, depth - 1, true)
+            board[i][j] = 0
+            bestScore = Math.min(score, bestScore)
+          }
+        }
+      }
+  
+      return bestScore
+    }
+  }
+  
+
+
+/*
 
 function newMinimax(board, playerTurn){
     console.log('New Minimax')
@@ -298,7 +407,7 @@ function minimax(board, depth, alpha, beta, is_maximizing) {
     }
 }
 
-
+*/
 
 
 
