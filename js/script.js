@@ -4,6 +4,7 @@ const game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 let scoreMove = [[...game[0]], [...game[1]], [...game[2]]]
 let row, column
 let playerTurn = true
+let turnCopy
 let playerChoice = 'X'
 let computerChoice = playerChoice === 'X' ? 'O' : 'X';
 
@@ -96,10 +97,12 @@ const computer = () => {
     }
     // let ai = minimax(scoreMove, 0, -Infinity, Infinity, true)
     // console.log(ai)
-    // scoreMove = game.slice(0)  
+    // scoreMove = game.slice(0)
+    let newAi = newMinimax(game, playerTurn)  
+    console.log(newAi)
     playerTurn = !playerTurn
-    console.log(game)
-    console.log(scoreMove)
+    // console.log(game)
+    // console.log(scoreMove)
 }
 
 const checkSquares = () => {
@@ -131,16 +134,20 @@ const checkWinner = (board, piece) => {
 // my minimax
 
 function newMinimax(board, playerTurn){
+    console.log('New Minimax')
+    console.log(board)
     let point = playerTurn ? -1 : 1
-    const winner = checkWinner(scoreMove, point)
+    const winner = checkWinner(board, point)
+    turnCopy = playerTurn
     //computer won
     if(winner === 10) return [1, null]
 
     // player won
     if(winner === -10) return [-1, null]
-    let move, moveScore;
-    if(!playerTurn) {
-        [moveScore, move ] = minimaxMaximize(board)
+    let move
+    let moveScore;
+    if(!turnCopy) {
+        [moveScore, move] = minimaxMaximize(board)
     } else {
         [moveScore, move] = minimaxMinimize(board)
     }
@@ -148,9 +155,14 @@ function newMinimax(board, playerTurn){
     if(move === null) {
         moveScore = 0
     }
+    console.log('end!!!')
+    console.log(moveScore)
+    console.log(move)
+    return move
 }
 
 function minimaxMaximize(board){
+    console.log('minimaxMaximize')
     let moveScore = -Infinity;
     let move = null;
 
@@ -159,8 +171,8 @@ function minimaxMaximize(board){
             if(board[i][j] === 0){
                 const newBoard = board.map(r => r.slice())
                 newBoard[i][j] = 1;
-                const [newMoveScore, ] = newMinimax(newBoard, playerTurn = true)
-
+                const [newMoveScore, ] = newMinimax(newBoard, turnCopy = true)
+                // console.log(newMoveScore)
                 if(newMoveScore > moveScore){
                     move = [i, j];
                     moveScore = newMoveScore
@@ -168,10 +180,14 @@ function minimaxMaximize(board){
             } 
         }
     }
+    console.log('Maximize!!!!!')
+    console.log(moveScore)
+    console.log(move)
     return [moveScore, move]
 }
 
 function minimaxMinimize(board){
+    console.log('minimaxMinimize')
     let moveScore = Infinity;
     let move = null;
 
@@ -180,7 +196,7 @@ function minimaxMinimize(board){
             if(board[i][j] === 0){
                 const newBoard = board.map(r => r.slice())
                 newBoard[i][j] = -1;
-                const [newMoveScore, ] = newMinimax(newBoard, playerTurn = false)
+                const [newMoveScore, ] = newMinimax(newBoard, turnCopy = false)
 
                 if(newMoveScore < moveScore){
                     move = [i, j];
@@ -190,6 +206,9 @@ function minimaxMinimize(board){
             } 
         }
     }
+    console.log('Minimize!!!!!')
+    console.log(moveScore)
+    console.log(move)
     return [moveScore, move]
 }
 
