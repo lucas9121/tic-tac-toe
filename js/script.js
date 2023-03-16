@@ -30,7 +30,7 @@ squares.forEach((square, idx) => {
 
 
 const playerMove = (idx, event) => {
-    let available = checkSquares()
+    let available = checkSquares(game)
     row = Math.floor(idx / 3)
     column = ((idx / 3) * 3) - (row * 3)
     let span = document.createElement('span')
@@ -63,7 +63,7 @@ const playerMove = (idx, event) => {
 }
 
 const computer = () => { 
-    let available = checkSquares()
+    let available = checkSquares(game)
     if (available) {
         let bestScore = -Infinity
         let bestMove = { row: -1, col: -1 }
@@ -73,7 +73,7 @@ const computer = () => {
           for (let j = 0; j < 3; j++) {
             if (game[i][j] === 0) {
               game[i][j] = 1
-              let score = minimax(game, 1, false)
+              let score = minimax(game, 5, false)
               game[i][j] = 0
               if (score > bestScore) {
                 bestScore = score
@@ -109,10 +109,12 @@ const computer = () => {
 }
 
 
-const checkSquares = () => {
-    for(let square of squares){
-        if(!square.childNodes.length) return true
-    }
+const checkSquares = (board) => {
+  let flattened = board.flatMap(el => el)
+    // for(let square of squares){
+    //     if(!square.childNodes.length) return true
+    // }
+    if(flattened.some((el) => el === 0)) return true
     return false
 }
 
@@ -139,7 +141,6 @@ const checkWinner = (board, piece) => {
 // my minimax
 const minimax = (board, depth, isMaximizing) => {
     let score = checkWinner(board, 1) || checkWinner(board, -1)
-  
     // Base case: return the score if the game is over or the depth limit has been reached
     if (score !== 0 || depth === 0) {
       return score
@@ -159,7 +160,6 @@ const minimax = (board, depth, isMaximizing) => {
           }
         }
       }
-  
       return bestScore
     } else {
       let bestScore = Infinity
