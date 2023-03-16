@@ -140,11 +140,15 @@ const checkWinner = (board, piece) => {
 
 // my minimax
 const minimax = (board, depth, isMaximizing) => {
+  let evaluateBoard = checkSquares(board)
     let score = checkWinner(board, 1) || checkWinner(board, -1)
     // Base case: return the score if the game is over or the depth limit has been reached
     if (score !== 0 || depth === 0) {
       return score
     }
+
+    // There are no more moves left to make the score is a tie
+    if(!evaluateBoard) return 0
   
     if (isMaximizing) {
       let bestScore = -Infinity
