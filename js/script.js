@@ -111,9 +111,6 @@ const computer = () => {
 
 const checkSquares = (board) => {
   let flattened = board.flatMap(el => el)
-    // for(let square of squares){
-    //     if(!square.childNodes.length) return true
-    // }
     if(flattened.some((el) => el === 0)) return true
     return false
 }
