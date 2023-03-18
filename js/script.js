@@ -1,6 +1,7 @@
 const squares = document.querySelectorAll('.square')
 
 const game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+const innerArr = []
 let row, column
 let playerTurn = true
 let turnCopy
@@ -111,30 +112,53 @@ const computer = () => {
 
 const checkSquares = (board) => {
   let flattened = board.flatMap(el => el)
-    // for(let square of squares){
-    //     if(!square.childNodes.length) return true
-    // }
     if(flattened.some((el) => el === 0)) return true
     return false
 }
 
 const checkWinner = (board, piece) => {
-    // Horizontal victory
-    if(board[0][0] === piece && board[0][1] === piece && board[0][2] === piece) return 10 * piece
-    if(board[1][0] === piece && board[1][1] === piece && board[1][2] === piece) return 10 * piece
-    if(board[2][0] === piece && board[2][1] === piece && board[2][2] === piece) return 10 * piece
 
-    // Vertical victory
-    if(board[0][0] === piece && board[1][0] === piece && board[2][0] === piece) return 10 * piece
-    if(board[0][1] === piece && board[1][1] === piece && board[2][1] === piece) return 10 * piece
-    if(board[0][2] === piece && board[1][2] === piece && board[2][2] === piece) return 10 * piece
+  const flattened = board.flatMap(ele => ele)
+  const rows = {}
+  const columns = {}
+  const diagonals = {
+    1: 0,
+    2: 0
+  }
 
-    // Diagoanal victory
-    if(board[0][0] === piece && board[1][1] === piece && board[2][2] === piece) return 10 * piece
-    if(board[0][2] === piece && board[1][1] === piece && board[2][0] === piece) return 10 * piece
+  for (let i = 0; i < board.length; i++) {
+    let length = board.length
+    // Row Win
+    rows[i + 1] = flattened[length * i]
+    rows[i + 1] += flattened[length * i + 1]
+    rows[i + 1] += flattened[length * i + 2]
+    if(length > 3 && length < 5) rows[i + 1] += flattened[length * i + 3]
+    if(length === 5) rows[i + 1] += flattened[length * i + 4]
+    
+    //Column Win
+    columns[i + 1] = flattened[i]
+    columns[i + 1] += flattened[length + i]
+    columns[i + 1] += flattened[length + length + i]
+    if(length > 3 && length < 5) columns[i + 1] += flattened[length + length + length + i]
+    if(length === 5) columns[i + 1] += flattened[length + length + length + length + i]
 
-    // Tie
-    return 0
+    //Diagonal Win
+    diagonals[1] += board[i][i]
+    diagonals[2] += flattened[(length - 1) * (i + 1)]
+    
+  }
+  for (const value in columns) {
+    if(columns[value] === piece * 3) return 10 * piece
+  }
+  for (const value in rows) {
+    if(rows[value] === piece * 3) return 10 * piece
+  }
+  for (const value in diagonals) {
+    if(diagonals[value] === piece * 3) return 10 * piece
+  }
+
+  return 0
+
 }
 
 
