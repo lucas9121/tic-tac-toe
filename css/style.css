@@ -18,6 +18,28 @@ main{
     height: 100%;
     width: 100%;
     position: absolute;
+    align-items: center;
+    justify-content: center;
+}
+
+.gameOver{
+    border: solid;
+    height: 300px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.winner{
+    font-size: medium;
+}
+
+.replay{
+    background-image: url('/replay_button.png');
+    height: 30px;
+    width: 30px;
 }
 
 .container {
