@@ -44,15 +44,15 @@ const playerMove = (idx, event) => {
     let winner = checkWinner(game, -1)
     if(winner === -10){
         console.log('you won')
-        document.querySelector('.screen').style.display = 'block'
+        document.querySelector('.screen').style.display = 'flex'
         return
     } else if( winner === 10){
         console.log('Computer won')
-        document.querySelector('.screen').style.display = 'block'
+        document.querySelector('.screen').style.display = 'flex'
         return
     } else if(!available){
         console.log('tie')
-        document.querySelector('.screen').style.display = 'block'
+        document.querySelector('.screen').style.display = 'flex'
         return
     }
     
@@ -95,15 +95,15 @@ const computer = () => {
     let winner = checkWinner(game, 1)
     if( winner === 10){
         console.log('Computer won')
-        document.querySelector('.screen').style.display = 'block'
+        document.querySelector('.screen').style.display = 'flex'
         return
     } else if(winner === -10){
         console.log('you won')
-        document.querySelector('.screen').style.display = 'block'
+        document.querySelector('.screen').style.display = 'flex'
         return
     } else if(!available){
         console.log('tie')
-        document.querySelector('.screen').style.display = 'block'
+        document.querySelector('.screen').style.display = 'flex'
         return
     }
     playerTurn = !playerTurn
