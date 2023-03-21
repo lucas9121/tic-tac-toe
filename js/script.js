@@ -1,6 +1,11 @@
 const squares = document.querySelectorAll('.square')
 const gameOverScreen = document.querySelector('.screen')
 const gameOverText = document.querySelector('.gameOver > p')
+const startScreen = document.querySelector('.start')
+const gameContainer = document.querySelector('.container')
+const smGame = document.querySelector('#3x3')
+const mdGame = document.querySelector('#4x4')
+const lgGame = document.querySelector('#5x5')
 
 const game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 const innerArr = []
