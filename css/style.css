@@ -37,7 +37,7 @@ main{
 .gameOver > p {
     margin: 0;
     font-size: xxx-large;
-    font-family: cursive;
+    font-family: math;
 }
 
 .winner{
