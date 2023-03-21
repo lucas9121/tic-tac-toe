@@ -16,17 +16,18 @@ for(let i = 0; i < 3; i++){
 }
 
 squares.forEach((square, idx) => {
-        square.addEventListener('click', (evt) => {
-            let event = evt.target;
-            if(!event.childNodes.length && playerTurn){
-                playerMove(idx, event)
-            } else {
-                setTimeout(() => {
-                    computer()
-                }, 0500);
-                console.log(game)
-            }
-        })
+  square.classList.add('free')
+  square.addEventListener('click', (evt) => {
+      let event = evt.target;
+      if(!event.childNodes.length && playerTurn){
+          playerMove(idx, event)
+      } else {
+          setTimeout(() => {
+              computer()
+          }, 0500);
+          console.log(game)
+      }
+  })
 })
 
 
