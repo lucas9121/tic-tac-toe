@@ -1,4 +1,6 @@
 const squares = document.querySelectorAll('.square')
+const gameOverScreen = document.querySelector('.screen')
+const gameOverText = document.querySelector('.gameOver > p')
 
 const game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 const innerArr = []
@@ -45,15 +47,18 @@ const playerMove = (idx, event) => {
     let winner = checkWinner(game, -1)
     if(winner === -10){
         console.log('you won')
-        document.querySelector('.screen').style.display = 'flex'
+        gameOverScreen.style.display = 'flex';
+        gameOverText.innerHTML = "You Won!"
         return
     } else if( winner === 10){
         console.log('Computer won')
-        document.querySelector('.screen').style.display = 'flex'
+        gameOverScreen.style.display = 'flex'
+        gameOverText.innerHTML = "Computer Won"
         return
     } else if(!available){
         console.log('tie')
-        document.querySelector('.screen').style.display = 'flex'
+        gameOverScreen.style.display = 'flex'
+        gameOverText.innerHTML = "It's a tie"
         return
     }
     
@@ -96,15 +101,18 @@ const computer = () => {
     let winner = checkWinner(game, 1)
     if( winner === 10){
         console.log('Computer won')
-        document.querySelector('.screen').style.display = 'flex'
+        gameOverScreen.style.display = 'flex'
+        gameOverText.innerHTML = "Computer Won"
         return
     } else if(winner === -10){
         console.log('you won')
-        document.querySelector('.screen').style.display = 'flex'
+        gameOverScreen.style.display = 'flex'
+        gameOverText.innerHTML = "You Won!"
         return
     } else if(!available){
         console.log('tie')
-        document.querySelector('.screen').style.display = 'flex'
+        gameOverScreen.style.display = 'flex'
+        gameOverText.innerHTML = "It's a tie"
         return
     }
     playerTurn = !playerTurn
