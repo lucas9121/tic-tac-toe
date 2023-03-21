@@ -23,13 +23,21 @@ main{
 }
 
 .gameOver{
-    border: solid;
+    border: solid #00000052;
+    border-radius: 10px;
     height: 300px;
     width: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
+    background: #ffffffa3;
+}
+
+.gameOver > p {
+    margin: 0;
+    font-size: xxx-large;
+    font-family: cursive;
 }
 
 .winner{
@@ -37,31 +45,41 @@ main{
 }
 
 .replay{
-    background-image: url('/replay_button.png');
-    height: 30px;
-    width: 30px;
+    background-image: url('../replay_button.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    height: 50px;
+    width: 50px;
+}
+
+.replay:hover{
+    cursor: pointer;
+}
+
+.replay:active{
+    background-repeat: round;
 }
 
 .container {
     display: grid;
     grid-template-columns: 200px 200px 200px;
+    gap: 5px;
 }
 
 .square{
-    /* border-bottom: solid; */
     height: 200px;
     width: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 10px 10px 20px 0px #000000b5;
 }
 
-.square:nth-child(1), .square:nth-child(2), .square:nth-child(3), .square:nth-child(4), .square:nth-child(5), .square:nth-child(6){
-    border-bottom: solid;;
-}
-
-.square:nth-child(1), .square:nth-child(2), .square:nth-child(4), .square:nth-child(5), .square:nth-child(7), .square:nth-child(8){
-    border-right: solid;
+.free:hover{
+    cursor: pointer;
+    box-shadow: 10px 10px 15px 2px #000000b5;
 }
 
 .choice{
