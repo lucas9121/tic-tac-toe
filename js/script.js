@@ -1,47 +1,116 @@
-const squares = document.querySelectorAll('.square')
 const gameOverScreen = document.querySelector('.screen')
 const gameOverText = document.querySelector('.gameOver > p')
 const startScreen = document.querySelector('.start')
 const gameContainer = document.querySelector('.container')
-const smGame = document.querySelector('#3x3')
-const mdGame = document.querySelector('#4x4')
-const lgGame = document.querySelector('#5x5')
+const smGame = document.getElementById('3x3')
+const mdGame = document.getElementById('4x4')
+const lgGame = document.getElementById('5x5')
+let squares
 
-const game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+
+const game = []
 const innerArr = []
 let row, column
 let playerTurn = true
-let turnCopy
 let playerChoice = 'X'
 let computerChoice = playerChoice === 'X' ? 'O' : 'X';
 
-for(let i = 0; i < 3; i++){
-    for(let j = 0; j < 3; j++){
-        if(j === 2) break
-        console.log(i, j)
-    }
-}
 
-squares.forEach((square, idx) => {
-  square.classList.add('free')
-  square.addEventListener('click', (evt) => {
-      let event = evt.target;
-      if(!event.childNodes.length && playerTurn){
-          playerMove(idx, event)
-      } else {
-          setTimeout(() => {
-              computer()
-          }, 0500);
-          console.log(game)
-      }
-  })
+smGame.addEventListener('click', (evt) => {
+  evt.preventDefault()
+  for(let i = 0; i < 3; i++){
+    innerArr.push(0)
+  }
+  for(let i = 0; i < 3; i++){
+    game.push(innerArr)
+  }
+  for(let i = 0; i < 9; i++){
+    let div = document.createElement('div')
+    div.classList.add('square')
+    gameContainer.appendChild(div)
+  }
+  startGame()
+  startScreen.style.display = 'none'
+  gameContainer.classList.add('three')
+  gameContainer.style.display = 'grid'
 })
+
+mdGame.addEventListener('click', (evt) => {
+  evt.preventDefault()
+  for(let i = 0; i < 4; i++){
+    innerArr.push(0)
+  }
+  for(let i = 0; i < 4; i++){
+    game.push(innerArr)
+  }
+  for(let i = 0; i < 16; i++){
+    let div = document.createElement('div')
+    div.classList.add('square')
+    div.style.height = '150px'
+    div.style.width = '150px'
+    gameContainer.appendChild(div)
+  }
+  startGame()
+  startScreen.style.display = 'none'
+  gameContainer.classList.add('four')
+  gameContainer.style.display = 'grid'
+})
+
+lgGame.addEventListener('click', (evt) => {
+  evt.preventDefault()
+  for(let i = 0; i < 5; i++){
+    innerArr.push(0)
+  }
+  for(let i = 0; i < 5; i++){
+    game.push(innerArr)
+  }
+  for(let i = 0; i < 25; i++){
+    let div = document.createElement('div')
+    div.classList.add('square')
+    div.style.height = '120px'
+    div.style.width = '120px'
+    gameContainer.appendChild(div)
+  }
+  startGame()
+  startScreen.style.display = 'none'
+  gameContainer.classList.add('five')
+  gameContainer.style.display = 'grid'
+})
+
+
+
+function startGame(){
+  console.log(game.length)
+  squares = document.querySelectorAll('.square')
+  squares.forEach((square, idx) => {
+    square.classList.add('free')
+    square.addEventListener('click', (evt) => {
+        let event = evt.target;
+        if(!event.childNodes.length && playerTurn){
+            playerMove(idx, event)
+        } else {
+            setTimeout(() => {
+                computer()
+            }, 0500);
+        }
+    })
+  })
+}
 
 
 const playerMove = (idx, event) => {
     let available = checkSquares(game)
-    row = Math.floor(idx / 3)
-    column = ((idx / 3) * 3) - (row * 3)
+    length = game.length
+    console.log('length is ', length)
+    console.log(idx)
+    console.log('row is ', idx/length)
+    console.log('column is ',  ((idx / length) * length) - (row * length))
+    if(length === 3) row = Math.floor(idx / 3)
+    if(length === 3) column = ((idx / 3) * 3) - (row * 3)
+    if(length === 4) row = Math.floor(idx / 4)
+    if(length === 4) column = ((idx / 4) * 4) - (row * 4)
+    if(length === 5) row = Math.floor(idx / 3)
+    if(length === 5) column = ((idx / 5) * 5) - (row * 5)
     let span = document.createElement('span')
     span.classList.add('choice')
     span.innerHTML = playerChoice
@@ -50,39 +119,41 @@ const playerMove = (idx, event) => {
     event.appendChild(span)
     // check if someone won
     let winner = checkWinner(game, -1)
-    if(winner === -10){
-        console.log('you won')
-        gameOverScreen.style.display = 'flex';
-        gameOverText.innerHTML = "You Won!"
-        return
-    } else if( winner === 10){
-        console.log('Computer won')
-        gameOverScreen.style.display = 'flex'
-        gameOverText.innerHTML = "Computer Won"
-        return
-    } else if(!available){
-        console.log('tie')
-        gameOverScreen.style.display = 'flex'
-        gameOverText.innerHTML = "It's a tie"
-        return
-    }
+    console.log(winner)
+    // if(winner === -10){
+    //     console.log('you won')
+    //     gameOverScreen.style.display = 'flex';
+    //     gameOverText.innerHTML = "You Won!"
+    //     return
+    // } else if( winner === 10){
+    //     console.log('Computer won')
+    //     gameOverScreen.style.display = 'flex'
+    //     gameOverText.innerHTML = "Computer Won"
+    //     return
+    // } else if(!available){
+    //     console.log('tie')
+    //     gameOverScreen.style.display = 'flex'
+    //     gameOverText.innerHTML = "It's a tie"
+    //     return
+    // }
     
-    // computer's turn
-    playerTurn = !playerTurn
-    setTimeout(() => {
-        computer()
-    }, 0500);
+    // // computer's turn
+    // playerTurn = !playerTurn
+    // setTimeout(() => {
+    //     computer()
+    // }, 0500);
 }
 
 const computer = () => { 
     let available = checkSquares(game)
+    length = game.length
     if (available) {
         let bestScore = -Infinity
         let bestMove = { row: -1, col: -1 }
     
         // Try all possible moves and pick the one with the best score
-        for (let i = 0; i < 3; i++) {
-          for (let j = 0; j < 3; j++) {
+        for (let i = 0; i < length; i++) {
+          for (let j = 0; j < length; j++) {
             if (game[i][j] === 0) {
               game[i][j] = 1
               let score = minimax(game, 5, false)
@@ -131,8 +202,10 @@ const checkSquares = (board) => {
 }
 
 const checkWinner = (board, piece) => {
-
+  
   const flattened = board.flatMap(ele => ele)
+  console.log(board)
+  console.log(flattened)
   const rows = {}
   const columns = {}
   const diagonals = {
@@ -146,15 +219,15 @@ const checkWinner = (board, piece) => {
     rows[i + 1] = flattened[length * i]
     rows[i + 1] += flattened[length * i + 1]
     rows[i + 1] += flattened[length * i + 2]
-    if(length > 3 && length < 5) rows[i + 1] += flattened[length * i + 3]
-    if(length === 5) rows[i + 1] += flattened[length * i + 4]
+    if(i > 3 && i < 5) rows[i + 1] += flattened[length * i + 3]
+    if(i === 5) rows[i + 1] += flattened[length * i + 4]
     
     //Add Columns
     columns[i + 1] = flattened[i]
     columns[i + 1] += flattened[length + i]
     columns[i + 1] += flattened[length + length + i]
-    if(length > 3 && length < 5) columns[i + 1] += flattened[length + length + length + i]
-    if(length === 5) columns[i + 1] += flattened[length + length + length + length + i]
+    if(i > 3 && i < 5) columns[i + 1] += flattened[length + length + length + i]
+    if(i === 5) columns[i + 1] += flattened[length + length + length + length + i]
 
     //Add Diagonals
     diagonals[1] += board[i][i]
@@ -162,20 +235,24 @@ const checkWinner = (board, piece) => {
     
   }
 
+  console.log(columns)
+  console.log(rows)
+  console.log(diagonals)
+
   // Check if there is a winner
   // Row Win
   for (const value in columns) {
-    if(columns[value] === piece * 3) return 10 * piece
+    if(columns[value] === piece * board.length) return 10 * piece
   }
 
   //Column Win
   for (const value in rows) {
-    if(rows[value] === piece * 3) return 10 * piece
+    if(rows[value] === piece * board.length) return 10 * piece
   }
 
   //Diagonal Win
   for (const value in diagonals) {
-    if(diagonals[value] === piece * 3) return 10 * piece
+    if(diagonals[value] === piece * board.length) return 10 * piece
   }
 
   return 0
