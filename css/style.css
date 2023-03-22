@@ -4,8 +4,12 @@
 }
 
 body{
+    margin: 0 auto;
     height: 100vh;
-    widows: 100vw;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 header {
@@ -14,7 +18,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 10px 10px 20px 0px #000000b5;
+    box-shadow: 10px 5px 20px 0px #000000b5;
     background: whitesmoke;
     border-radius: 10px;
     margin: 0 auto;
@@ -80,6 +84,7 @@ main{
     justify-content: center;
     position: relative;
     margin: 0 auto;
+    padding: 10px 0 5px 0;
 }
 
 .screen{
@@ -133,9 +138,21 @@ main{
 }
 
 .container {
-    display: grid;
+    display: none;
     grid-template-columns: 200px 200px 200px;
     gap: 5px;
+}
+
+.three{
+    grid-template-columns: 200px 200px 200px;
+}
+
+.four{
+    grid-template-columns: 150px 150px 150px 150px;
+}
+
+.five{
+    grid-template-columns: 120px 120px 120px 120px 120px;
 }
 
 .square{
