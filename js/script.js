@@ -197,14 +197,14 @@ const checkWinner = (board, piece) => {
     rows[i + 1] = flattened[length * i]
     rows[i + 1] += flattened[length * i + 1]
     rows[i + 1] += flattened[length * i + 2]
-    if(length > 3 && length < 5) rows[i + 1] += flattened[length * i + 3]
+    if(length > 3) rows[i + 1] += flattened[length * i + 3]
     if(length === 5) rows[i + 1] += flattened[length * i + 4]
     
     //Add Columns
     columns[i + 1] = flattened[i]
     columns[i + 1] += flattened[length + i]
     columns[i + 1] += flattened[length + length + i]
-    if(length > 3 && length < 5) columns[i + 1] += flattened[length + length + length + i]
+    if(length > 3) columns[i + 1] += flattened[length + length + length + i]
     if(length === 5) columns[i + 1] += flattened[length + length + length + length + i]
 
     //Add Diagonals
@@ -214,20 +214,21 @@ const checkWinner = (board, piece) => {
   }
 
 
+
   // Check if there is a winner
   // Row Win
   for (const value in columns) {
-    if(columns[value] === piece * board.length) return 10 * piece
+    if(columns[value] === piece * length) return 10 * piece
   }
 
   //Column Win
   for (const value in rows) {
-    if(rows[value] === piece * board.length) return 10 * piece
+    if(rows[value] === piece * length) return 10 * piece
   }
 
   //Diagonal Win
   for (const value in diagonals) {
-    if(diagonals[value] === piece * board.length) return 10 * piece
+    if(diagonals[value] === piece * length) return 10 * piece
   }
 
   return 0
