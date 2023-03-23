@@ -85,12 +85,12 @@ function startGame(){
 const playerMove = (idx, event) => {
     let available = checkSquares(game)
     length = game.length
+
+    // converts front end tic tac tow to back end array
     row = Math.floor(idx / length)
     column = ((idx / length) * length) - (row * length)
-    console.log('length is ', length)
-    console.log(idx)
-    console.log('row is ', idx/length)
-    console.log('column is ',  ((idx / length) * length) - (row * length))
+
+    // front end choice and array update
     let span = document.createElement('span')
     span.classList.add('choice')
     span.innerHTML = playerChoice
@@ -100,28 +100,28 @@ const playerMove = (idx, event) => {
     // check if someone won
     let winner = checkWinner(game, -1)
     console.log(winner)
-    // if(winner === -10){
-    //     console.log('you won')
-    //     gameOverScreen.style.display = 'flex';
-    //     gameOverText.innerHTML = "You Won!"
-    //     return
-    // } else if( winner === 10){
-    //     console.log('Computer won')
-    //     gameOverScreen.style.display = 'flex'
-    //     gameOverText.innerHTML = "Computer Won"
-    //     return
-    // } else if(!available){
-    //     console.log('tie')
-    //     gameOverScreen.style.display = 'flex'
-    //     gameOverText.innerHTML = "It's a tie"
-    //     return
-    // }
+    if(winner === -10){
+        console.log('you won')
+        gameOverScreen.style.display = 'flex';
+        gameOverText.innerHTML = "You Won!"
+        return
+    } else if( winner === 10){
+        console.log('Computer won')
+        gameOverScreen.style.display = 'flex'
+        gameOverText.innerHTML = "Computer Won"
+        return
+    } else if(!available){
+        console.log('tie')
+        gameOverScreen.style.display = 'flex'
+        gameOverText.innerHTML = "It's a tie"
+        return
+    }
     
-    // // computer's turn
-    // playerTurn = !playerTurn
-    // setTimeout(() => {
-    //     computer()
-    // }, 0500);
+    // computer's turn
+    playerTurn = !playerTurn
+    setTimeout(() => {
+        computer()
+    }, 0500);
 }
 
 const computer = () => { 
