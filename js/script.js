@@ -118,10 +118,10 @@ const playerMove = (idx, event) => {
     }
     
     // computer's turn
-    // playerTurn = !playerTurn
-    // setTimeout(() => {
-    //     computer()
-    // }, 0500);
+    playerTurn = !playerTurn
+    setTimeout(() => {
+        computer()
+    }, 0500);
 }
 
 const computer = () => { 
@@ -184,8 +184,6 @@ const checkSquares = (board) => {
 const checkWinner = (board, piece) => {
   
   const flattened = board.flatMap(ele => ele)
-  console.log(board)
-  console.log(flattened)
   const rows = {}
   const columns = {}
   const diagonals = {
@@ -215,9 +213,6 @@ const checkWinner = (board, piece) => {
     
   }
 
-  console.log('columsn is ', columns)
-  console.log('rows is ', rows)
-  console.log('diagonals is ', diagonals)
 
   // Check if there is a winner
   // Row Win
