@@ -152,7 +152,7 @@ const computer = () => {
         let span = document.createElement('span')
         span.classList.add('choice')
         span.innerHTML = computerChoice
-        squares[((row * 3) + column)].appendChild(span)
+        squares[((row * length) + column)].appendChild(span)
     }
     let winner = checkWinner(game, 1)
     if( winner === 10){
