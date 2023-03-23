@@ -8,7 +8,7 @@ const lgGame = document.getElementById('5x5')
 let squares
 
 
-const game = []
+let game = []
 const innerArr = []
 let row, column
 let playerTurn = true
@@ -18,12 +18,7 @@ let computerChoice = playerChoice === 'X' ? 'O' : 'X';
 
 smGame.addEventListener('click', (evt) => {
   evt.preventDefault()
-  for(let i = 0; i < 3; i++){
-    innerArr.push(0)
-  }
-  for(let i = 0; i < 3; i++){
-    game.push(innerArr)
-  }
+  game = [[0,0,0], [0,0,0], [0,0,0]]
   for(let i = 0; i < 9; i++){
     let div = document.createElement('div')
     div.classList.add('square')
@@ -37,12 +32,7 @@ smGame.addEventListener('click', (evt) => {
 
 mdGame.addEventListener('click', (evt) => {
   evt.preventDefault()
-  for(let i = 0; i < 4; i++){
-    innerArr.push(0)
-  }
-  for(let i = 0; i < 4; i++){
-    game.push(innerArr)
-  }
+  game = [[0,0,0], [0,0,0], [0,0,0], [0,0,0]]
   for(let i = 0; i < 16; i++){
     let div = document.createElement('div')
     div.classList.add('square')
@@ -58,12 +48,7 @@ mdGame.addEventListener('click', (evt) => {
 
 lgGame.addEventListener('click', (evt) => {
   evt.preventDefault()
-  for(let i = 0; i < 5; i++){
-    innerArr.push(0)
-  }
-  for(let i = 0; i < 5; i++){
-    game.push(innerArr)
-  }
+  game = [[0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0]]
   for(let i = 0; i < 25; i++){
     let div = document.createElement('div')
     div.classList.add('square')
@@ -80,7 +65,6 @@ lgGame.addEventListener('click', (evt) => {
 
 
 function startGame(){
-  console.log(game.length)
   squares = document.querySelectorAll('.square')
   squares.forEach((square, idx) => {
     square.classList.add('free')
@@ -101,16 +85,12 @@ function startGame(){
 const playerMove = (idx, event) => {
     let available = checkSquares(game)
     length = game.length
+    row = Math.floor(idx / length)
+    column = ((idx / length) * length) - (row * length)
     console.log('length is ', length)
     console.log(idx)
     console.log('row is ', idx/length)
     console.log('column is ',  ((idx / length) * length) - (row * length))
-    if(length === 3) row = Math.floor(idx / 3)
-    if(length === 3) column = ((idx / 3) * 3) - (row * 3)
-    if(length === 4) row = Math.floor(idx / 4)
-    if(length === 4) column = ((idx / 4) * 4) - (row * 4)
-    if(length === 5) row = Math.floor(idx / 3)
-    if(length === 5) column = ((idx / 5) * 5) - (row * 5)
     let span = document.createElement('span')
     span.classList.add('choice')
     span.innerHTML = playerChoice
