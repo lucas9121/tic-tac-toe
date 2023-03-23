@@ -32,7 +32,7 @@ smGame.addEventListener('click', (evt) => {
 
 mdGame.addEventListener('click', (evt) => {
   evt.preventDefault()
-  game = [[0,0,0], [0,0,0], [0,0,0], [0,0,0]]
+  game = [[0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]]
   for(let i = 0; i < 16; i++){
     let div = document.createElement('div')
     div.classList.add('square')
@@ -48,7 +48,7 @@ mdGame.addEventListener('click', (evt) => {
 
 lgGame.addEventListener('click', (evt) => {
   evt.preventDefault()
-  game = [[0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0]]
+  game = [[0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0]]
   for(let i = 0; i < 25; i++){
     let div = document.createElement('div')
     div.classList.add('square')
@@ -118,10 +118,10 @@ const playerMove = (idx, event) => {
     }
     
     // computer's turn
-    playerTurn = !playerTurn
-    setTimeout(() => {
-        computer()
-    }, 0500);
+    // playerTurn = !playerTurn
+    // setTimeout(() => {
+    //     computer()
+    // }, 0500);
 }
 
 const computer = () => { 
@@ -193,21 +193,21 @@ const checkWinner = (board, piece) => {
     2: 0
   }
 
+  let length = board.length
   for (let i = 0; i < board.length; i++) {
-    let length = board.length
     // Add Rows
     rows[i + 1] = flattened[length * i]
     rows[i + 1] += flattened[length * i + 1]
     rows[i + 1] += flattened[length * i + 2]
-    if(i > 3 && i < 5) rows[i + 1] += flattened[length * i + 3]
-    if(i === 5) rows[i + 1] += flattened[length * i + 4]
+    if(length > 3 && length < 5) rows[i + 1] += flattened[length * i + 3]
+    if(length === 5) rows[i + 1] += flattened[length * i + 4]
     
     //Add Columns
     columns[i + 1] = flattened[i]
     columns[i + 1] += flattened[length + i]
     columns[i + 1] += flattened[length + length + i]
-    if(i > 3 && i < 5) columns[i + 1] += flattened[length + length + length + i]
-    if(i === 5) columns[i + 1] += flattened[length + length + length + length + i]
+    if(length > 3 && length < 5) columns[i + 1] += flattened[length + length + length + i]
+    if(length === 5) columns[i + 1] += flattened[length + length + length + length + i]
 
     //Add Diagonals
     diagonals[1] += board[i][i]
@@ -215,9 +215,9 @@ const checkWinner = (board, piece) => {
     
   }
 
-  console.log(columns)
-  console.log(rows)
-  console.log(diagonals)
+  console.log('columsn is ', columns)
+  console.log('rows is ', rows)
+  console.log('diagonals is ', diagonals)
 
   // Check if there is a winner
   // Row Win
