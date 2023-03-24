@@ -81,6 +81,10 @@ function startGame(){
   })
 }
 
+const flattened = (board) => {
+  return board.flatMap(el => el)
+}
+
 
 const playerMove = (idx, event) => {
     let available = checkSquares(game)
