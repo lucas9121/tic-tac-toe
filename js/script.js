@@ -180,7 +180,7 @@ const computer = () => {
 
 
 const checkSquares = (board) => {
-  let flattened = board.flatMap(el => el)
+  let flattened = flattened(board)
     if(flattened.some((el) => el === 0)) return true
     return false
 }
