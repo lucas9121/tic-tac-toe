@@ -81,9 +81,6 @@ function startGame(){
   })
 }
 
-const flattened = (board) => {
-  return board.flatMap(el => el)
-}
 
 
 const playerMove = (idx, event) => {
@@ -132,21 +129,24 @@ const computer = () => {
     let available = checkSquares(game)
     length = game.length
     if (available) {
+        const flattened = game.flatMap(ele => ele)
         let bestScore = -Infinity
         let bestMove = { row: -1, col: -1 }
+        let i, j
     
         // Try all possible moves and pick the one with the best score
-        for (let i = 0; i < length; i++) {
-          for (let j = 0; j < length; j++) {
-            if (game[i][j] === 0) {
-              game[i][j] = 1
-              let score = minimax(game, 5, false)
-              game[i][j] = 0
-              if (score > bestScore) {
-                bestScore = score
-                bestMove.row = i
-                bestMove.col = j
-              }
+        for(let s = 0; s < flattened.length; s++){
+          i = Math.floor(s / length)
+          j = ((s / length) * length) - (i * length)
+          // console.log('computer ', s, i, j)
+          if (game[i][j] === 0) {
+            game[i][j] = 1
+            let score = minimax(game, 5, false)
+            game[i][j] = 0
+            if (score > bestScore) {
+              bestScore = score
+              bestMove.row = i
+              bestMove.col = j
             }
           }
         }
@@ -180,7 +180,7 @@ const computer = () => {
 
 
 const checkSquares = (board) => {
-  let flattened = flattened(board)
+  let flattened = board.flatMap(el => el)
     if(flattened.some((el) => el === 0)) return true
     return false
 }
@@ -238,6 +238,8 @@ const checkWinner = (board, piece) => {
   return 0
 
 }
+
+
 
 
 // my minimax
