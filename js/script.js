@@ -141,7 +141,7 @@ const computer = () => {
           // console.log('computer ', s, i, j)
           if (game[i][j] === 0) {
             game[i][j] = 1
-            let score = minimax(game, 5, false)
+            let score = minimax(game, (length * 2), false)
             game[i][j] = 0
             if (score > bestScore) {
               bestScore = score
