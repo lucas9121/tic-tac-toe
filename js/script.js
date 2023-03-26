@@ -246,6 +246,7 @@ const checkWinner = (board, piece) => {
 const minimax = (board, depth, isMaximizing) => {
   let evaluateBoard = checkSquares(board)
     let score = checkWinner(board, 1) || checkWinner(board, -1)
+    const flattened = board.flatMap(ele => ele)
     // Base case: return the score if the game is over or the depth limit has been reached
     if (score !== 0 || depth === 0) {
       return score
@@ -258,14 +259,14 @@ const minimax = (board, depth, isMaximizing) => {
       let bestScore = -Infinity
   
       // Try all possible moves and pick the one that maximizes the score
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-          if (board[i][j] === 0) {
-            board[i][j] = 1
-            let score = minimax(board, depth - 1, false)
-            board[i][j] = 0
-            bestScore = Math.max(score, bestScore)
-          }
+      for(let s = 0; s < flattened.length; s++){
+        i = Math.floor(s / length)
+        j = ((s / length) * length) - (i * length)
+        if (board[i][j] === 0) {
+          board[i][j] = 1
+          let score = minimax(board, depth - 1, false)
+          board[i][j] = 0
+          bestScore = Math.max(score, bestScore)
         }
       }
       return bestScore
@@ -273,17 +274,16 @@ const minimax = (board, depth, isMaximizing) => {
       let bestScore = Infinity
   
       // Try all possible moves and pick the one that minimizes the score
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-          if (board[i][j] === 0) {
-            board[i][j] = -1
-            let score = minimax(board, depth - 1, true)
-            board[i][j] = 0
-            bestScore = Math.min(score, bestScore)
-          }
+      for(let s = 0; s < flattened.length; s++){
+        i = Math.floor(s / length)
+        j = ((s / length) * length) - (i * length)
+        if (board[i][j] === 0) {
+          board[i][j] = -1
+          let score = minimax(board, depth - 1, true)
+          board[i][j] = 0
+          bestScore = Math.min(score, bestScore)
         }
       }
-  
       return bestScore
     }
 }
