@@ -65,6 +65,7 @@ lgGame.addEventListener('click', (evt) => {
 
 
 function startGame(){
+  console.log(game)
   squares = document.querySelectorAll('.square')
   squares.forEach((square, idx) => {
     square.classList.add('free')
@@ -77,6 +78,7 @@ function startGame(){
                 computer()
             }, 0500);
         }
+        console.log(game)
     })
   })
 }
@@ -84,6 +86,7 @@ function startGame(){
 
 
 const playerMove = (idx, event) => {
+  console.log(game)
     let available = checkSquares(game)
     length = game.length
 
@@ -126,10 +129,11 @@ const playerMove = (idx, event) => {
 }
 
 const computer = () => { 
+  console.log('computer ', game)
     let available = checkSquares(game)
     length = game.length
     if (available) {
-        const flattened = game.flatMap(ele => ele)
+        let flattened = game.flatMap(ele => ele)
         let bestScore = -Infinity
         let bestMove = { row: -1, col: -1 }
         let i, j
@@ -245,45 +249,49 @@ const checkWinner = (board, piece) => {
 // my minimax
 const minimax = (board, depth, isMaximizing) => {
   let evaluateBoard = checkSquares(board)
-    let score = checkWinner(board, 1) || checkWinner(board, -1)
-    const flattened = board.flatMap(ele => ele)
-    // Base case: return the score if the game is over or the depth limit has been reached
-    if (score !== 0 || depth === 0) {
-      return score
-    }
+  let length2 = board.length
+  let flattened2 = board.flatMap(ele => ele)
+  let score = checkWinner(board, 1) || checkWinner(board, -1)
+  console.log('game is ', game)
+  console.log('board is ', board)
+  let i, j
+  // Base case: return the score if the game is over or the depth limit has been reached
+  if (score !== 0 || depth === 0) {
+    return score
+  }
 
-    // There are no more moves left to make the score is a tie
-    if(!evaluateBoard) return 0
-  
-    if (isMaximizing) {
-      let bestScore = -Infinity
-  
-      // Try all possible moves and pick the one that maximizes the score
-      for(let s = 0; s < flattened.length; s++){
-        i = Math.floor(s / length)
-        j = ((s / length) * length) - (i * length)
-        if (board[i][j] === 0) {
-          board[i][j] = 1
-          let score = minimax(board, depth - 1, false)
-          board[i][j] = 0
-          bestScore = Math.max(score, bestScore)
-        }
+  // There are no more moves left to make the score is a tie
+  if(!evaluateBoard) return 0
+
+  if (isMaximizing) {
+    let bestScore = -Infinity
+
+    // Try all possible moves and pick the one that maximizes the score
+    for(let s = 0; s < flattened2.length; s++){
+      i = Math.floor(s / length2)
+      j = ((s / length2) * length2) - (i * length2)
+      if (board[i][j] === 0) {
+        board[i][j] = 1
+        let score = minimax(board, depth - 1, false)
+        board[i][j] = 0
+        bestScore = Math.max(score, bestScore)
       }
-      return bestScore
-    } else {
-      let bestScore = Infinity
-  
-      // Try all possible moves and pick the one that minimizes the score
-      for(let s = 0; s < flattened.length; s++){
-        i = Math.floor(s / length)
-        j = ((s / length) * length) - (i * length)
-        if (board[i][j] === 0) {
-          board[i][j] = -1
-          let score = minimax(board, depth - 1, true)
-          board[i][j] = 0
-          bestScore = Math.min(score, bestScore)
-        }
-      }
-      return bestScore
     }
+    return bestScore
+  } else {
+    let bestScore = Infinity
+
+    // Try all possible moves and pick the one that minimizes the score
+    for(let s = 0; s < flattened2.length; s++){
+      i = Math.floor(s / length2)
+      j = ((s / length2) * length2) - (i * length2)
+      if (board[i][j] === 0) {
+        board[i][j] = -1
+        let score = minimax(board, depth - 1, true)
+        board[i][j] = 0
+        bestScore = Math.min(score, bestScore)
+      }
+    }
+    return bestScore
+  }
 }
