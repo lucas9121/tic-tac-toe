@@ -65,7 +65,6 @@ lgGame.addEventListener('click', (evt) => {
 
 
 function startGame(){
-  console.log(game)
   squares = document.querySelectorAll('.square')
   squares.forEach((square, idx) => {
     square.classList.add('free')
@@ -78,7 +77,6 @@ function startGame(){
                 computer()
             }, 0500);
         }
-        console.log(game)
     })
   })
 }
@@ -86,7 +84,6 @@ function startGame(){
 
 
 const playerMove = (idx, event) => {
-  console.log(game)
     let available = checkSquares(game)
     length = game.length
 
@@ -129,7 +126,6 @@ const playerMove = (idx, event) => {
 }
 
 const computer = () => { 
-  console.log('computer ', game)
     let available = checkSquares(game)
     length = game.length
     if (available) {
@@ -249,11 +245,9 @@ const checkWinner = (board, piece) => {
 // my minimax
 const minimax = (board, depth, isMaximizing) => {
   let evaluateBoard = checkSquares(board)
+  let score = checkWinner(board, 1) || checkWinner(board, -1)
   let length2 = board.length
   let flattened2 = board.flatMap(ele => ele)
-  let score = checkWinner(board, 1) || checkWinner(board, -1)
-  console.log('game is ', game)
-  console.log('board is ', board)
   let i, j
   // Base case: return the score if the game is over or the depth limit has been reached
   if (score !== 0 || depth === 0) {
