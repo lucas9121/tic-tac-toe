@@ -9,7 +9,6 @@ let squares
 
 
 let game = []
-const innerArr = []
 let row, column
 let playerTurn = true
 let playerChoice = 'X'
@@ -138,7 +137,6 @@ const computer = () => {
         for(let s = 0; s < flattened.length; s++){
           i = Math.floor(s / length)
           j = ((s / length) * length) - (i * length)
-          // console.log('computer ', s, i, j)
           if (game[i][j] === 0) {
             game[i][j] = 1
             let score = minimax(game, (length * 2), false, Infinity, -Infinity)
@@ -217,8 +215,6 @@ const checkWinner = (board, piece) => {
     
   }
 
-
-
   // Check if there is a winner
   // Row Win
   for (const value in columns) {
@@ -246,9 +242,6 @@ const checkWinner = (board, piece) => {
 const minimax = (board, depth, isMaximizing, alpha, beta) => {
   let evaluateBoard = checkSquares(board)
   let result = checkWinner(board, 1) || checkWinner(board, -1)
-  // let length2 = board.length
-  // let flattened2 = board.flatMap(ele => ele)
-  // let i, j
   // Base case: return the score if the game is over or the depth limit has been reached
   if (result !== 0) return result
 
@@ -282,40 +275,4 @@ const minimax = (board, depth, isMaximizing, alpha, beta) => {
     }
   }
   return bestScore
-
-
-
-
-  // if (isMaximizing) {
-  //   let bestScore = -Infinity
-
-  //   // Try all possible moves and pick the one that maximizes the score
-  //   for (let i = 0; i < 3; i++) {
-  //     for (let j = 0; j < 3; j++) {
-  //       if (board[i][j] === 0) {
-  //         board[i][j] = 1
-  //         let score = minimax(board, depth - 1, false)
-  //         board[i][j] = 0
-  //         bestScore = Math.max(score, bestScore)
-  //       }
-  //     }
-  //   }
-
-  //   return bestScore
-  // } else {
-  //   let bestScore = Infinity
-
-  //   // Try all possible moves and pick the one that minimizes the score
-  //   for (let i = 0; i < 3; i++) {
-  //     for (let j = 0; j < 3; j++) {
-  //       if (board[i][j] === 0) {
-  //         board[i][j] = -1
-  //         let score = minimax(board, depth - 1, true)
-  //         board[i][j] = 0
-  //         bestScore = Math.min(score, bestScore)
-  //       }
-  //     }
-  //   }
-  //   return bestScore
-  // }
 }
