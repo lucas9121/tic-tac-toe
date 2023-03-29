@@ -127,7 +127,7 @@ const playerMove = (idx, event) => {
 
 const computer = () => { 
     let available = checkSquares(game)
-    length = game.length
+    let length = game.length
     if (available) {
         let flattened = game.flatMap(ele => ele)
         let bestScore = -Infinity
@@ -195,8 +195,8 @@ const checkWinner = (board, piece) => {
     2: 0
   }
 
-  let length = board.length
-  for (let i = 0; i < board.length; i++) {
+  let length = game.length
+  for (let i = 0; i < length; i++) {
     // Add Rows
     rows[i + 1] = flattened[length * i]
     rows[i + 1] += flattened[length * i + 1]
@@ -212,7 +212,7 @@ const checkWinner = (board, piece) => {
     if(length === 5) columns[i + 1] += flattened[length + length + length + length + i]
 
     //Add Diagonals
-    diagonals[1] += board[i][i]
+    diagonals[1] += flattened[i * (length + 1)]
     diagonals[2] += flattened[(length - 1) * (i + 1)]
     
   }
