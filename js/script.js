@@ -65,19 +65,23 @@ lgGame.addEventListener('click', (evt) => {
 
 function startGame(){
   squares = document.querySelectorAll('.square')
-  squares.forEach((square, idx) => {
-    square.classList.add('free')
-    square.addEventListener('click', (evt) => {
-        let event = evt.target;
-        if(!event.childNodes.length && playerTurn){
-            playerMove(idx, event)
-        } else {
-            setTimeout(() => {
-                computer()
-            }, 0500);
-        }
+  console.log(playerTurn)
+  if(playerTurn){
+    squares.forEach((square, idx) => {
+      if(square.childNodes.length === 0){
+        square.classList.add('free')
+        square.addEventListener('click', clicked)
+      }
     })
-  })
+  } else {
+    squares.forEach((square) => {
+      square.classList.remove('free')
+      square.removeEventListener('click', clicked)
+    })
+    setTimeout(() => {
+      computer()
+  }, 0500);
+  }
 }
 
 
@@ -119,9 +123,10 @@ const playerMove = (idx, event) => {
     
     // computer's turn
     playerTurn = !playerTurn
-    setTimeout(() => {
-        computer()
-    }, 0500);
+    startGame()
+    // setTimeout(() => {
+    //     computer()
+    // }, 0500);
 }
 
 const computer = () => { 
@@ -139,7 +144,7 @@ const computer = () => {
           j = ((s / length) * length) - (i * length)
           if (game[i][j] === 0) {
             game[i][j] = 1
-            let score = minimax(game, (length * 2), false, Infinity, -Infinity)
+            let score = minimax(game, (length * 2 + 2), false, Infinity, -Infinity)
             game[i][j] = 0
             if (score > bestScore) {
               bestScore = score
@@ -174,6 +179,7 @@ const computer = () => {
         return
     }
     playerTurn = !playerTurn
+    startGame()
 }
 
 
