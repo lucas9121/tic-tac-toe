@@ -84,6 +84,17 @@ function startGame(){
   }
 }
 
+const clicked = (evt) => {
+  let event = evt.target;
+  let idx
+  for( const [key, value] of Object.entries(squares)){
+    if(value === event){
+      idx = key
+      break
+    }
+  }
+  playerMove(idx, event)
+}
 
 
 const playerMove = (idx, event) => {
