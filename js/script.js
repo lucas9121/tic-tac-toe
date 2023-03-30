@@ -135,9 +135,6 @@ const playerMove = (idx, event) => {
     // computer's turn
     playerTurn = !playerTurn
     startGame()
-    // setTimeout(() => {
-    //     computer()
-    // }, 0500);
 }
 
 const computer = () => { 
