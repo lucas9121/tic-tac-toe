@@ -5,7 +5,9 @@ const gameContainer = document.querySelector('.container')
 const smGame = document.getElementById('3x3')
 const mdGame = document.getElementById('4x4')
 const lgGame = document.getElementById('5x5')
+const replay = document.querySelector('.replay')
 let squares
+
 
 
 let game = []
@@ -61,6 +63,22 @@ lgGame.addEventListener('click', (evt) => {
   gameContainer.style.display = 'grid'
 })
 
+
+replay.addEventListener('click', (evt) => {
+  game = []
+  playerTurn = true
+  let length = squares.length
+  squares.forEach((square) => {
+    if(length === 9) gameContainer.classList.remove('three')
+    if(length === 16) gameContainer.classList.remove('four')
+    if(length === 25) gameContainer.classList.remove('five')
+    square.removeEventListener('click', clicked)
+    gameContainer.removeChild(square)
+  })
+  startScreen.style.display = 'flex'
+  gameOverScreen.style.display = 'none'
+  gameContainer.style.display = 'none'
+})
 
 
 function startGame(){
